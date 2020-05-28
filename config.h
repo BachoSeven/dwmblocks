@@ -5,18 +5,19 @@ static const Block blocks[] = {
 	{"",	"music",	0,	11},
 	// {"",	"pacpackages",	0,	8},
 	{"",	"news",		0,	6},
+	// {"",	"iplocate",	30,	23},
 	/* {"",	"crypto",	0,	13}, */
 	{"",	"price bat \"Basic Attention Token\" 🦁",	0,	20},
 	/* {"",	"price btc Bitcoin 💰",				0,	21}, */
 	/* {"",	"price lbc \"LBRY Token\" 📚",			0,	22}, */
 	{"",	"torrent",	20,	7},
-	{"",	"memory",	10,	14},
-	{"",	"cpu",		10,	18},
-	{"",	"disk",		10,	19},
+	// {"",	"memory",	10,	14},
+	// {"",	"cpu",		10,	18},
+	// {"",	"disk",		10,	19},
 	/* {"",	"moonphase",	18000,	17}, */
 	{"",	"weather",	18000,	5},
 	{"",	"mailbox",	180,	12},
-	/* {"",	"nettraf",	1,	16}, */
+	{"",	"nettraf",	1,	16},
 	{"",	"volume",	0,	10},
 	{"",	"battery",	5,	3},
 	{"",	"clock",	60,	1},
