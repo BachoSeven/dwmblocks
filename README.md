@@ -15,7 +15,7 @@ So if you want my build out of the box, download those and put them in your
 `$PATH`. I do this to avoid redundancy in LARBS, both i3 and dwm use the same
 statusbar scripts.
 
-# Signalling changes
+# Signaling changes
 
 Most statusbars constantly rerun every script every several seconds to update.
 This is an option here, but a superior choice is giving your module a signal
@@ -42,5 +42,5 @@ scripts in response to click events.  See the above linked scripts for examples
 of this using the `$BLOCK_BUTTON` variable.
 
 For this feature to work, you need the appropriate patch in dwm as well. See
-[here](https://gist.github.com/danbyl/54f7c1d57fc6507242a95b71c3d8fdea).
+[here](https://dwm.suckless.org/patches/statuscmd/).
 Credit for those patches goes to Daniel Bylinka (daniel.bylinka@gmail.com).
