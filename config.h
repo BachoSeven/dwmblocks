@@ -3,8 +3,7 @@ static const Block blocks[] = {
 	/*Icon*/	/*Command*/		/*Update Interval*/	/*Update Signal*/
 	{"", "cat /tmp/recordingicon 2>/dev/null",	0,	9},
 	{"",	"music",	0,	11},
-        {"",    "resetcol",     0,      23},
-	{"",	"pacpackages",	0,	8},
+	// {"",	"pacpackages",	0,	8},
 	{"",	"news",		0,	6},
 	// {"",	"iplocate",	30,	23},
 	/* {"",	"crypto",	0,	13}, */
@@ -13,7 +12,7 @@ static const Block blocks[] = {
 	/* {"",	"price lbc \"LBRY Token\" 📚",			0,	22}, */
 	{"",	"torrent",	20,	7},
 	// {"",	"memory",	10,	14},
-	// {"",	"cpu",		10,	18},
+	// {"",	"cpubars",	10,	18},
 	// {"",	"disk",		10,	19},
 	/* {"",	"moonphase",	18000,	17}, */
 	// {"",	"weather",	18000,	5},
