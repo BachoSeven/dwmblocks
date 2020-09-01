@@ -5,6 +5,8 @@ static const Block blocks[] = {
 
 	{"",		"music",				0,	11},
 
+	{"",		"news",					0,	6},
+
 	{"",		"pacpackages",				0,	8},
 
 	{"",		"torrent",				20,	7},
