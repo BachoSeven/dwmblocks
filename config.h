@@ -22,5 +22,5 @@ static const Block blocks[] = {
 	{"",		"internet",				5,	4},
 };
 
-//sets delimeter between status commands. NULL character ('\0') means no delimeter.
+//Sets delimiter between status commands. NULL character ('\0') means no delimiter.
 static char *delim = " ";
