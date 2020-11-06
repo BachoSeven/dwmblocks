@@ -7,8 +7,6 @@ static const Block blocks[] = {
 
 	{"",		"pacpackages",				0,	8},
 
-	// {"",		"news",					0,	6},
-
 	{"",		"torrent",				20,	7},
 
 	{"",		"mailbox",				180,	12},
