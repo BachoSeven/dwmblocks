@@ -11,7 +11,7 @@ static const Block blocks[] = {
 
 	{"",		"torrent",				20,	7},
 
-	{"",		"mailbox",				180,	12},
+	{"",		"mailbox",				120,	12},
 
 	{"",		"volume",				0,	10},
 
