@@ -9,6 +9,8 @@ static const Block blocks[] = {
 
 	{"",		"pacpackages",				0,	8},
 
+	{"",		"price bat \"Basic Attention Token\" 🦁",3600,	14},
+
 	{"",		"torrent",				20,	7},
 
 	{"",		"mailbox",				120,	12},
