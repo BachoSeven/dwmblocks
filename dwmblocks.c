@@ -1,10 +1,12 @@
-#include<stdlib.h>
-#include<stdio.h>
-#include<string.h>
-#include<unistd.h>
-#include<signal.h>
-#include<X11/Xlib.h>
-#define LENGTH(X)               (sizeof(X) / sizeof (X[0]))
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <signal.h>
+#include <errno.h>
+#include <X11/Xlib.h>
+#define LENGTH(X) (sizeof(X) / sizeof (X[0]))
 #define CMDLENGTH		50
 
 typedef struct {
@@ -41,24 +43,37 @@ static void (*writestatus) () = setroot;
 
 void replace(char *str, char old, char new)
 {
-	int N = strlen(str);
-	for(int i = 0; i < N; i++)
-		if(str[i] == old)
-			str[i] = new;
+	for(char * c = str; *c; c++)
+		if(*c == old)
+			*c = new;
 }
 
+// the previous function looked nice but unfortunately it didnt work if to_remove was in any position other than the last character
+// theres probably still a better way of doing this
 void remove_all(char *str, char to_remove) {
 	char *read = str;
 	char *write = str;
 	while (*read) {
-		if (*read == to_remove) {
-			read++;
-			*write = *read;
+		if (*read != to_remove) {
+			*write++ = *read;
 		}
-		read++;
-		write++;
+		++read;
 	}
+	*write = '\0';
 }
+
+int gcd(int a, int b)
+{
+	int temp;
+	while (b > 0){
+		temp = a % b;
+
+		a = b;
+		b = temp;
+	}
+	return a;
+}
+
 
 //opens process *cmd and stores output in *output
 void getcmd(const Block *block, char *output)
@@ -68,21 +83,22 @@ void getcmd(const Block *block, char *output)
 		output[0] = block->signal;
 		output++;
 	}
-	strcpy(output, block->icon);
 	char *cmd = block->command;
 	FILE *cmdf = popen(cmd,"r");
-	if (!cmdf)
+	if (!cmdf){
+        //printf("failed to run: %s, %d\n", block->command, errno);
 		return;
 	char c;
 	int i = strlen(block->icon);
-	fgets(output+i, CMDLENGTH-(strlen(delim)+1), cmdf);
+	strcpy(output, block->icon);
+    strcpy(output+i, tmpstr);
 	remove_all(output, '\n');
 	i = strlen(output);
-    if ((i > 0 && block != &blocks[LENGTH(blocks) - 1]))
+    if ((i > 0 && block != &blocks[LENGTH(blocks) - 1])){
         strcat(output, delim);
+    }
     i+=strlen(delim);
 	output[i++] = '\0';
-	pclose(cmdf);
 }
 
 void getcmds(int time)
@@ -91,8 +107,9 @@ void getcmds(int time)
 	for(int i = 0; i < LENGTH(blocks); i++)
 	{
 		current = blocks + i;
-		if ((current->interval != 0 && time % current->interval == 0) || time == -1)
+		if ((current->interval != 0 && time % current->interval == 0) || time == -1){
 			getcmd(current,statusbar[i]);
+        }
 	}
 }
 
@@ -103,14 +120,19 @@ void getsigcmds(int signal)
 	for (int i = 0; i < LENGTH(blocks); i++)
 	{
 		current = blocks + i;
-		if (current->signal == signal)
+		if (current->signal == signal){
 			getcmd(current,statusbar[i]);
+        }
 	}
 }
 
 void setupsignals()
 {
 	struct sigaction sa;
+
+	for(int i = SIGRTMIN; i <= SIGRTMAX; i++)
+		signal(i, SIG_IGN);
+
 	for(int i = 0; i < LENGTH(blocks); i++)
 	{
 		if (blocks[i].signal > 0)
@@ -172,14 +194,34 @@ void statusloop()
 #ifndef __OpenBSD__
 	setupsignals();
 #endif
-	int i = 0;
+    // first figure out the default wait interval by finding the
+    // greatest common denominator of the intervals
+    unsigned int interval = -1;
+    for(int i = 0; i < LENGTH(blocks); i++){
+        if(blocks[i].interval){
+            interval = gcd(blocks[i].interval, interval);
+        }
+    }
+	unsigned int i = 0;
+    int interrupted = 0;
+    const struct timespec sleeptime = {interval, 0};
+    struct timespec tosleep = sleeptime;
 	getcmds(-1);
 	while(statusContinue)
 	{
-		getcmds(i);
-		writestatus();
-		sleep(1.0);
-		i++;
+        // sleep for tosleep (should be a sleeptime of interval seconds) and put what was left if interrupted back into tosleep
+        interrupted = nanosleep(&tosleep, &tosleep);
+        // if interrupted then just go sleep again for the remaining time
+        if(interrupted == -1){
+            continue;
+        }
+        // if not interrupted then do the calling and writing
+        getcmds(i);
+        writestatus();
+        // then increment since its actually been a second (plus the time it took the commands to run)
+        i += interval;
+        // set the time to sleep back to the sleeptime of 1s
+        tosleep = sleeptime;
 	}
 }
 
