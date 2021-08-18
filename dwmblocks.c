@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <X11/Xlib.h>
 #define LENGTH(X) (sizeof(X) / sizeof (X[0]))
-#define CMDLENGTH		50
+#define CMDLENGTH		70
 
 typedef struct {
 	char* icon;
@@ -88,7 +88,22 @@ void getcmd(const Block *block, char *output)
 	if (!cmdf){
         //printf("failed to run: %s, %d\n", block->command, errno);
 		return;
-	char c;
+    }
+    char tmpstr[CMDLENGTH] = "";
+    // TODO decide whether its better to use the last value till next time or just keep trying while the error was the interrupt
+    // this keeps trying to read if it got nothing and the error was an interrupt
+    //  could also just read to a separate buffer and not move the data over if interrupted
+    //  this way will take longer trying to complete 1 thing but will get it done
+    //  the other way will move on to keep going with everything and the part that failed to read will be wrong till its updated again
+    // either way you have to save the data to a temp buffer because when it fails it writes nothing and then then it gets displayed before this finishes
+	char * s;
+    int e;
+    do {
+        errno = 0;
+        s = fgets(tmpstr, CMDLENGTH-(strlen(delim)+1), cmdf);
+        e = errno;
+    } while (!s && e == EINTR);
+	pclose(cmdf);
 	int i = strlen(block->icon);
 	strcpy(output, block->icon);
     strcpy(output+i, tmpstr);
