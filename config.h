@@ -5,15 +5,15 @@ static const Block blocks[] = {
 
 	{"",		"music",				0,	11},
 
-	{"",		"spotbar",				0,	13},
+	{"",		"timeout 2 spotbar",			0,	13},
 
 	{"",		"pacpackages",				0,	8},
 
 	// {"",		"torrent",				20,	7},
 
 	{"",		"mail-status unipi",			0,	12},
-	{"",		"mail-status unipi-ta",			0,	12},
-	{"",		"mail-status gmail",			0,	12},
+	{"",		"mail-status unipi-ta",			0,	14},
+	{"",		"mail-status gmail",			0,	15},
 
 	{"",		"volume",				0,	10},
 
