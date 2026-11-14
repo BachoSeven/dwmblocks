@@ -9,9 +9,11 @@ static const Block blocks[] = {
 
 	{"",		"pacpackages",				0,	8},
 
-	{"",		"torrent",				20,	7},
+	// {"",		"torrent",				20,	7},
 
-	{"",		"mailbox",				120,	12},
+	{"",		"mail-status unipi",			0,	12},
+	{"",		"mail-status unipi-ta",			0,	12},
+	{"",		"mail-status gmail",			0,	12},
 
 	{"",		"volume",				0,	10},
 
